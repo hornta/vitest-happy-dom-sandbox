@@ -1,6 +1,10 @@
 // @vitest-environment happy-dom
 
-import { render, screen } from '@testing-library/react';
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { test, describe } from 'vitest';
@@ -45,5 +49,34 @@ describe('happy-dom', () => {
 
     await userEvent.click(screen.getByRole('button'));
     screen.getByText('submitted');
+  });
+
+  // https://github.com/capricorn86/happy-dom/issues/467
+  test("Cannot read properties of undefined (reading 'getRootNode')", async () => {
+    const MyComponent = () => {
+      const [open, setOpen] = useState(true);
+
+      return (
+        <>
+          {open && (
+            <div>
+              <button
+                onClick={() => {
+                  setOpen(false);
+                }}
+              >
+                close
+              </button>
+            </div>
+          )}
+          <button>button</button>
+        </>
+      );
+    };
+
+    render(<MyComponent />);
+
+    await userEvent.click(screen.getByRole('button', { name: /close/i }));
+    await userEvent.click(screen.getByRole('button', { name: /button/i }));
   });
 });
