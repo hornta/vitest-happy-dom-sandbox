@@ -1,17 +1,13 @@
 // @vitest-environment happy-dom
 
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { useState } from 'react';
-import { test, describe } from 'vitest';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { useState } from "react";
+import { test, describe } from "vitest";
 
-describe('happy-dom', () => {
+describe("happy-dom", () => {
   // https://github.com/capricorn86/happy-dom/issues/534
-  test('TypeError: activeElement.detachEvent is not a function', async () => {
+  test("TypeError: activeElement.detachEvent is not a function", async () => {
     const MyComponent = () => {
       return (
         <>
@@ -23,12 +19,12 @@ describe('happy-dom', () => {
 
     render(<MyComponent />);
 
-    await userEvent.type(screen.getByRole('textbox'), 'foo');
-    await userEvent.click(screen.getByRole('button'));
+    await userEvent.type(screen.getByRole("textbox"), "foo");
+    await userEvent.click(screen.getByRole("button"));
   });
 
   // https://github.com/capricorn86/happy-dom/issues/527
-  test('onSubmit not called', async () => {
+  test("onSubmit not called", async () => {
     const MyComponent = () => {
       const [submitted, setSubmitted] = useState(false);
       const handleSubmit = () => {
@@ -37,7 +33,7 @@ describe('happy-dom', () => {
 
       return (
         <>
-          {submitted && 'submitted'}
+          {submitted && "submitted"}
           <form onSubmit={handleSubmit}>
             <button>button</button>
           </form>
@@ -47,8 +43,8 @@ describe('happy-dom', () => {
 
     render(<MyComponent />);
 
-    await userEvent.click(screen.getByRole('button'));
-    screen.getByText('submitted');
+    await userEvent.click(screen.getByRole("button"));
+    screen.getByText("submitted");
   });
 
   // https://github.com/capricorn86/happy-dom/issues/467
@@ -76,7 +72,7 @@ describe('happy-dom', () => {
 
     render(<MyComponent />);
 
-    await userEvent.click(screen.getByRole('button', { name: /close/i }));
-    await userEvent.click(screen.getByRole('button', { name: /button/i }));
+    await userEvent.click(screen.getByRole("button", { name: /close/i }));
+    await userEvent.click(screen.getByRole("button", { name: /button/i }));
   });
 });
